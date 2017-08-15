@@ -1,13 +1,3 @@
-
-
-/* REMAINING:
-	Add sprite.
-*/
-
-console.log('script connected');
-
-
-
 var game = Object.create(Object);
 game['minRadius'] = 20;
 game['maxRadius'] = 50;
@@ -160,43 +150,4 @@ function onFrame(event) {
 	}
 }
 
-
-
-function run() {
-	initialiseGame();
-}
-
-
-// TESTS //
-
-function testRandomInRange(min, max) {
-	for (var i=0; i<100; i++) {
-		var res = randomInRange(min, max);
-		if (res < min || res > max) {
-			alert('Fail. Function name:', testRandomInRange.name, 'Value is', res, 'but should be between', min, max);
-		}
-	};
-}
-
-function testGame() {
-	if (!(game.minRadius === 20 && game.maxRadius === 50 && game.numFriendlyBalls === 40 && game.numEvilBalls === 1)) {
-		// alert('Fail. Function name:', testGame.name);
-	}
-}
-
-function testInitialiseGame() {
-	initialiseGame();
-	if (!(Array.isArray(game.friendlyBalls) && game.friendlyBalls.length === 40) 
-		&& Array.isArray(game.evilBalls) && game.evilBalls.length === 1) {
-		// alert('Fail. Function name:', testInitialiseGame.name);	
-	}
-}
-
-function runTests() {
-	testRandomInRange(-10, 10);
-	testGame();
-	testInitialiseGame();
-}
-
-// runTests();
-run();
+initialiseGame();
