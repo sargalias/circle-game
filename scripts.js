@@ -1,8 +1,6 @@
 
 
 /* REMAINING:
-	SPECIAL EFFECT FOR NEW BALL AND COLLISION BALLS
-	Add music & sound effect.
 	Add sprite.
 */
 
@@ -17,10 +15,32 @@ game['numFriendlyBalls'] = 50;
 game['numEvilBalls'] = 1;
 game.frameNumber = 0;
 game.sounds = [
-	new Howl({src: 'sounds/squiggle.mp3'}),
-	new Howl({src: 'sounds/bubbles.mp3'}),
-	new Howl({src: 'sounds/flash-1.mp3'}),
-	new Howl({src: 'sounds/pinwheel.mp3'})
+	new Howl( {src: 'sounds/bubbles.mp3'} 	),
+	new Howl( {src: 'sounds/clay.mp3'} 		),
+	new Howl( {src: 'sounds/confetti.mp3'}	),
+	new Howl( {src: 'sounds/corona.mp3'} 	),
+	new Howl( {src: 'sounds/dotted-spiral.mp3'} 	),
+	new Howl( {src: 'sounds/flash-1.mp3'} 	),
+	new Howl( {src: 'sounds/flash-2.mp3'} 	),
+	new Howl( {src: 'sounds/flash-3.mp3'} 	),
+	new Howl( {src: 'sounds/glimmer.mp3'} 	),
+	new Howl( {src: 'sounds/moon.mp3'} 		),
+	new Howl( {src: 'sounds/pinwheel.mp3'}	),
+	new Howl( {src: 'sounds/piston-1.mp3'}	),
+	new Howl( {src: 'sounds/piston-2.mp3'}	),
+	new Howl( {src: 'sounds/piston-3.mp3'}	),
+	new Howl( {src: 'sounds/prism-1.mp3'} 	),
+	new Howl( {src: 'sounds/prism-2.mp3'} 	),
+	new Howl( {src: 'sounds/prism-3.mp3'} 	),
+	new Howl( {src: 'sounds/splits.mp3'} 	),
+	new Howl( {src: 'sounds/squiggle.mp3'} 	),
+	new Howl( {src: 'sounds/strike.mp3'} 	),
+	new Howl( {src: 'sounds/suspension.mp3'}),
+	new Howl( {src: 'sounds/timer.mp3'} 	),
+	new Howl( {src: 'sounds/ufo.mp3'} 		),
+	new Howl( {src: 'sounds/veil.mp3'} 		),
+	new Howl( {src: 'sounds/wipe.mp3'} 		),
+	new Howl( {src: 'sounds/zig-zag.mp3' }	)
 ];
 
 
@@ -58,11 +78,11 @@ function createBall() {
 }
 
 function randomInRange(min, max) {
-	return Math.random() * (max-min) + min
+	return Math.floor(Math.random() * (max-min) + min);
 }
 
 function generateColor() {
-	return new Color(randomInRange(0.2, 1), randomInRange(0.2, 1), randomInRange(0.2, 1));
+	return new Color(Math.random(), Math.random(), Math.random());
 }
 
 function isColliding(ball1, ball2) {
@@ -106,7 +126,7 @@ function onFrame(event) {
 			game.friendlyBalls.splice(i, 1);
 			i--;
 			var index = randomInRange(0, game.sounds.length);
-			game.sounds[index].play();
+			game.sounds[randomInRange(0, game.sounds.length)].play();
 		}
 
 		// COLLISIONS FOR FRIENDLY BALLS
