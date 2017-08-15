@@ -128,10 +128,15 @@ function onFrame(event) {
 		// COLLISIONS FOR FRIENDLY BALLS
 		for (var j=0; j<game.friendlyBalls.length; j++) {
 			var otherBall = game.friendlyBalls[j];
+
+			// same ball
 			if (otherBall === ball) {
 				continue;
 			}
+
+			// colliding with another ball
 			else if (isColliding(ball, otherBall)) {
+				// it's a new collision
 				if (!ball.collidingWith.includes(otherBall)) {
 					ball.fillColor = generateColor();
 					ball.strokeWidth = 5; 
@@ -140,11 +145,17 @@ function onFrame(event) {
 					continue;
 				}
 			}
+
+			// not colliding with the other ball
+			// otherball is in the collision list (i.e. old collision)
 			else if (ball.collidingWith.includes(otherBall)) {
 				var index = ball.collidingWith.indexOf(otherBall);
-				ball.strokeColor = null;
-				ball.strokeWidth = null;
 				ball.collidingWith.splice(index, 1);
+				// if no other current collisions
+				if (ball.collidingWith.length === 0) {
+					ball.strokeColor = null;
+					ball.strokeWidth = null;
+				}
 			}
 		}
 	}
