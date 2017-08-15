@@ -1,58 +1,95 @@
 
-// Each time through, location is updated based on velocity.
-// Also there will be collision detection that changes the ball color.
-// each object will have a collidedWit attribute that keeps track of current collisions, so balls don't change color too many times for one collision.
-// The evil ball will be controllable by mouse and keyboard.
-// I'll add in sprites later, for now just have an evil ball.
-// Add music and a sound effect later too.
-// canvas resizing;
+
+/* REMAINING:
+	SPECIAL EFFECT FOR NEW BALL AND COLLISION BALLS
+	Add music & sound effect.
+	Add sprite.
+*/
 
 console.log('script connected');
 
 
 
 var game = Object.create(Object);
-game['minRadius'] = 10;
+game['minRadius'] = 20;
 game['maxRadius'] = 50;
 game['numFriendlyBalls'] = 50;
 game['numEvilBalls'] = 1;
+game.frameNumber = 0;
+game.sounds = [
+	new Howl({src: 'sounds/squiggle.mp3'}),
+	new Howl({src: 'sounds/bubbles.mp3'}),
+	new Howl({src: 'sounds/flash-1.mp3'}),
+	new Howl({src: 'sounds/pinwheel.mp3'})
+];
 
 
 function initialiseGame() {
 	game.friendlyBalls = [];
 	game.evilBalls = [];
 	for (var i=0; i<game.numFriendlyBalls; i++) {
-		var radius = randomInRange(game.minRadius, game.maxRadius);
-		var x = randomInRange(0 + radius, view.size.width - radius);
-		var y = randomInRange(0 + radius, view.size.height - radius);
-		var color = new Color(Math.random(), Math.random(), Math.random());
-		var velX = randomInRange(-6, 6);
-		var velY = randomInRange(-6, 6);
-		ball = new Path.Circle(new Point(x, y), radius);
-		ball.fillColor = color;
-		ball.velX = velX;
-		ball.velY = velY;
-		ball.radius = radius;
-		game.friendlyBalls.push(ball);
+		game.friendlyBalls.push(createBall());
 	}
 	for (var i=0; i<game.numEvilBalls; i++) {
-		var radius = randomInRange(game.minRadius, game.maxRadius);
+		var radius = 50;
 		var x = randomInRange(0 + radius, view.size.width - radius);
 		var y = randomInRange(0 + radius, view.size.height - radius);
-		var color = new Color(Math.random(), Math.random(), Math.random()); 
-		ball = new Path.Circle(new Point(x, y), 50);
-		ball.fillColor = '#ffffff';
+
+		ball = new Path.Circle(new Point(x, y), radius);
 		ball.radius = radius;
+		ball.strokeColor = '#ffffff';
+		ball.strokeWidth = 10;
 		game.evilBalls.push(ball);
 	}
+}
+
+function createBall() {
+	var radius = randomInRange(game.minRadius, game.maxRadius);
+	var x = randomInRange(0 + radius, view.size.width - radius);
+	var y = randomInRange(0 + radius, view.size.height - radius);
+
+	ball = new Path.Circle(new Point(x, y), radius);
+	ball.radius = radius;
+	ball.fillColor = generateColor();
+	ball.velX = randomInRange(-4, 4);
+	ball.velY = randomInRange(-4, 4);
+	ball.collidingWith = [];
+	return ball;
 }
 
 function randomInRange(min, max) {
 	return Math.random() * (max-min) + min
 }
 
+function generateColor() {
+	return new Color(randomInRange(0.2, 1), randomInRange(0.2, 1), randomInRange(0.2, 1));
+}
+
+function isColliding(ball1, ball2) {
+	var dist = Math.sqrt(
+					 Math.pow(ball1.position.x - ball2.position.x, 2) + Math.pow(ball1.position.y - ball2.position.y, 2)
+			);
+	if (dist < ball1.radius + ball2.radius) {
+		return true;
+	}
+	return false;
+}
+
+// MOVING THE EVIL BALL
+function onMouseMove(event) {
+	game.evilBalls[0].position = event.point;
+}
+
 function onFrame(event) {
+	// COUNT FRAMES, CREATE A NEW BALL IF NEEDED
+	game.frameNumber++;
+	game.frameNumber %= 100;
+	if (game.frameNumber === 0 && game.friendlyBalls.length < game.numFriendlyBalls) {
+			game.friendlyBalls.push(createBall());
+	}
+
 	for (var i=0; i<game.friendlyBalls.length; i++) {
+		// MOVE BALL
 		var ball = game.friendlyBalls[i];
 		if (ball.position.x+ball.radius+ball.velX >= view.size.width || ball.position.x-ball.radius+ball.velX <= 0) {
 			ball.velX *= -1;
@@ -62,10 +99,46 @@ function onFrame(event) {
 		}
 		ball.position.x += ball.velX;
 		ball.position.y += ball.velY;
+
+		// COLLISION WITH EVIL BALL
+		if (isColliding(game.evilBalls[0], ball)) {
+			ball.remove();
+			game.friendlyBalls.splice(i, 1);
+			i--;
+			var index = randomInRange(0, game.sounds.length);
+			game.sounds[index].play();
+		}
+
+		// COLLISIONS FOR FRIENDLY BALLS
+		for (var j=0; j<game.friendlyBalls.length; j++) {
+			var otherBall = game.friendlyBalls[j];
+			if (otherBall === ball) {
+				continue;
+			}
+			else if (isColliding(ball, otherBall)) {
+				if (!ball.collidingWith.includes(otherBall)) {
+					ball.fillColor = generateColor();
+					ball.strokeWidth = 5; 
+					ball.strokeColor = 'white';
+					ball.collidingWith.push(otherBall);
+					continue;
+				}
+			}
+			else if (ball.collidingWith.includes(otherBall)) {
+				var index = ball.collidingWith.indexOf(otherBall);
+				ball.strokeColor = null;
+				ball.strokeWidth = null;
+				ball.collidingWith.splice(index, 1);
+			}
+		}
 	}
 }
 
 
+
+function run() {
+	initialiseGame();
+}
 
 
 // TESTS //
@@ -80,16 +153,16 @@ function testRandomInRange(min, max) {
 }
 
 function testGame() {
-	if (!(game.minRadius === 10 && game.maxRadius === 50 && game.numFriendlyBalls === 50 && game.numEvilBalls === 1)) {
-		alert('Fail. Function name:', testGame.name);
+	if (!(game.minRadius === 20 && game.maxRadius === 50 && game.numFriendlyBalls === 40 && game.numEvilBalls === 1)) {
+		// alert('Fail. Function name:', testGame.name);
 	}
 }
 
 function testInitialiseGame() {
 	initialiseGame();
-	if (!(Array.isArray(game.friendlyBalls) && game.friendlyBalls.length === 50) 
+	if (!(Array.isArray(game.friendlyBalls) && game.friendlyBalls.length === 40) 
 		&& Array.isArray(game.evilBalls) && game.evilBalls.length === 1) {
-		alert('Fail. Function name:', testInitialiseGame.name);	
+		// alert('Fail. Function name:', testInitialiseGame.name);	
 	}
 }
 
@@ -99,4 +172,5 @@ function runTests() {
 	testInitialiseGame();
 }
 
-runTests();
+// runTests();
+run();
