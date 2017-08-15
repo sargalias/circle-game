@@ -15,33 +15,39 @@ game['numFriendlyBalls'] = 50;
 game['numEvilBalls'] = 1;
 game.frameNumber = 0;
 game.sounds = [
-	new Howl( {src: 'sounds/bubbles.mp3'} 	),
-	new Howl( {src: 'sounds/clay.mp3'} 		),
-	new Howl( {src: 'sounds/confetti.mp3'}	),
-	new Howl( {src: 'sounds/corona.mp3'} 	),
-	new Howl( {src: 'sounds/dotted-spiral.mp3'} 	),
-	new Howl( {src: 'sounds/flash-1.mp3'} 	),
-	new Howl( {src: 'sounds/flash-2.mp3'} 	),
-	new Howl( {src: 'sounds/flash-3.mp3'} 	),
-	new Howl( {src: 'sounds/glimmer.mp3'} 	),
-	new Howl( {src: 'sounds/moon.mp3'} 		),
-	new Howl( {src: 'sounds/pinwheel.mp3'}	),
-	new Howl( {src: 'sounds/piston-1.mp3'}	),
-	new Howl( {src: 'sounds/piston-2.mp3'}	),
-	new Howl( {src: 'sounds/piston-3.mp3'}	),
-	new Howl( {src: 'sounds/prism-1.mp3'} 	),
-	new Howl( {src: 'sounds/prism-2.mp3'} 	),
-	new Howl( {src: 'sounds/prism-3.mp3'} 	),
-	new Howl( {src: 'sounds/splits.mp3'} 	),
-	new Howl( {src: 'sounds/squiggle.mp3'} 	),
-	new Howl( {src: 'sounds/strike.mp3'} 	),
-	new Howl( {src: 'sounds/suspension.mp3'}),
-	new Howl( {src: 'sounds/timer.mp3'} 	),
-	new Howl( {src: 'sounds/ufo.mp3'} 		),
-	new Howl( {src: 'sounds/veil.mp3'} 		),
-	new Howl( {src: 'sounds/wipe.mp3'} 		),
-	new Howl( {src: 'sounds/zig-zag.mp3' }	)
+	new Howl( {volume: 0.5, src: 'sounds/bubbles.mp3'		} 	),
+	new Howl( {volume: 0.5, src: 'sounds/clay.mp3'			}	),
+	new Howl( {volume: 0.5, src: 'sounds/confetti.mp3'		}	),
+	new Howl( {volume: 0.5, src: 'sounds/corona.mp3'		} 	),
+	new Howl( {volume: 0.5, src: 'sounds/dotted-spiral.mp3'	} 	),
+	new Howl( {volume: 0.5, src: 'sounds/flash-1.mp3'		} 	),
+	new Howl( {volume: 0.5, src: 'sounds/flash-2.mp3'		} 	),
+	new Howl( {volume: 0.5, src: 'sounds/flash-3.mp3'		} 	),
+	new Howl( {volume: 0.5, src: 'sounds/glimmer.mp3'		} 	),
+	new Howl( {volume: 0.5, src: 'sounds/moon.mp3'			}	),
+	new Howl( {volume: 0.5, src: 'sounds/pinwheel.mp3'		}	),
+	new Howl( {volume: 0.5, src: 'sounds/piston-1.mp3'		}	),
+	new Howl( {volume: 0.5, src: 'sounds/piston-2.mp3'		}	),
+	new Howl( {volume: 0.5, src: 'sounds/piston-3.mp3'		}	),
+	new Howl( {volume: 0.5, src: 'sounds/prism-1.mp3'		} 	),
+	new Howl( {volume: 0.5, src: 'sounds/prism-2.mp3'		} 	),
+	new Howl( {volume: 0.5, src: 'sounds/prism-3.mp3'		} 	),
+	new Howl( {volume: 0.5, src: 'sounds/splits.mp3'		} 	),
+	new Howl( {volume: 0.5, src: 'sounds/squiggle.mp3'		} 	),
+	new Howl( {volume: 0.5, src: 'sounds/strike.mp3'		} 	),
+	new Howl( {volume: 0.5, src: 'sounds/suspension.mp3'	}	),
+	new Howl( {volume: 0.5, src: 'sounds/timer.mp3'			} 	),
+	new Howl( {volume: 0.5, src: 'sounds/ufo.mp3'			}	),
+	new Howl( {volume: 0.5, src: 'sounds/veil.mp3'			}	),
+	new Howl( {volume: 0.5, src: 'sounds/wipe.mp3'			}	),
+	new Howl( {volume: 0.5, src: 'sounds/zig-zag.mp3' 		}	)
 ];
+game.music = new Howl( {
+	src: 'music/OutThere.ogg',
+	autoplay: true,
+	loop: true,
+	volume: 1
+});
 
 
 function initialiseGame() {
