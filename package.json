@@ -1,0 +1,23 @@
+{
+  "name": "circle-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sargalias/color-circles-game.git"
+  },
+  "author": "Spyros Argalias",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sargalias/color-circles-game/issues"
+  },
+  "homepage": "https://github.com/sargalias/color-circles-game#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
